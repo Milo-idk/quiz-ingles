@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Tiempos Verbales en Inglés</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 600px; margin: 20px auto; padding: 20px; background-color: #f4f4f9; }
+        .question-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        button { display: block; width: 100%; padding: 10px; margin: 5px 0; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #fff; }
+        button:hover { background: #e0e0e0; }
+        .correct { background-color: #d4edda !important; border-color: #c3e6cb; }
+        .incorrect { background-color: #f8d7da !important; border-color: #f5c6cb; }
+        #feedback { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Quiz de Tiempos Verbales</h1>
+    <div id="quiz-container"></div>
+
+    <script>
+        const questions = [
+            { q: "She _____ (eat) an apple every morning.", options: ["eats", "eat", "eating", "ate"], correct: 0 },
+            { q: "They _____ (play) soccer yesterday.", options: ["played", "play", "are playing", "plays"], correct: 0 },
+            { q: "Look! It _____ (rain) right now.", options: ["is raining", "rains", "rained", "rain"], correct: 0 },
+            { q: "I _____ (finish) my homework already.", options: ["have finished", "finished", "finish", "am finishing"], correct: 0 },
+            { q: "At 8:00 PM last night, I _____ (read) a book.", options: ["was reading", "read", "readed", "have read"], correct: 0 },
+            { q: "Tomorrow, we _____ (visit) our grandparents.", options: ["will visit", "visit", "visited", "visiting"], correct: 0 },
+            { q: "By the time you arrive, I _____ (cook) dinner.", options: ["will have cooked", "will cook", "cooked", "am cooking"], correct: 0 },
+            { q: "How long _____ (you/live) in this city?", options: ["have you been living", "do you live", "are you living", "did you live"], correct: 0 },
+            { q: "She _____ (study) for two hours before she took a break.", options: ["had been studying", "studied", "has studied", "was studying"], correct: 0 },
+            { q: "If I _____ (be) you, I would take that job.", options: ["were", "am", "was", "been"], correct: 0 }
+        ];
+
+        const container = document.getElementById('quiz-container');
+
+        questions.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'question-card';
+            div.innerHTML = `<p>${index + 1}. ${item.q}</p>`;
+            
+            item.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    const allBtns = div.querySelectorAll('button');
+                    allBtns.forEach(b => b.disabled = true);
+                    if (i === item.correct) {
+                        btn.className = 'correct';
+                        div.innerHTML += '<p style="color: green;">¡Correcto!</p>';
+                    } else {
+                        btn.className = 'incorrect';
+                        allBtns[item.correct].className = 'correct';
+                        div.innerHTML += '<p style="color: red;">Incorrecto. La respuesta correcta era: ' + item.options[item.correct] + '</p>';
+                    }
+                };
+                div.appendChild(btn);
+            });
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
