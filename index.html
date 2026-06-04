@@ -11,13 +11,18 @@
         button:hover { background: #e0e0e0; }
         .correct { background-color: #d4edda !important; border-color: #c3e6cb; }
         .incorrect { background-color: #f8d7da !important; border-color: #f5c6cb; }
-        #feedback { font-weight: bold; margin-top: 10px; }
+        #score-board { margin-top: 20px; padding: 15px; background: #fff; border-radius: 8px; border: 1px solid #ddd; text-align: center; }
     </style>
 </head>
 <body>
 
     <h1>Quiz de Tiempos Verbales</h1>
     <div id="quiz-container"></div>
+    
+    <div id="score-board">
+        <p>Correctas: <span id="correct-count">0</span> | Incorrectas: <span id="incorrect-count">0</span></p>
+        <h2 id="final-result"></h2>
+    </div>
 
     <script>
         const questions = [
@@ -34,6 +39,9 @@
         ];
 
         const container = document.getElementById('quiz-container');
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let answeredQuestions = 0;
 
         questions.forEach((item, index) => {
             const div = document.createElement('div');
@@ -46,13 +54,32 @@
                 btn.onclick = () => {
                     const allBtns = div.querySelectorAll('button');
                     allBtns.forEach(b => b.disabled = true);
+                    
                     if (i === item.correct) {
                         btn.className = 'correct';
-                        div.innerHTML += '<p style="color: green;">¡Correcto!</p>';
+                        correctCount++;
                     } else {
                         btn.className = 'incorrect';
                         allBtns[item.correct].className = 'correct';
-                        div.innerHTML += '<p style="color: red;">Incorrecto. La respuesta correcta era: ' + item.options[item.correct] + '</p>';
+                        incorrectCount++;
+                    }
+                    
+                    answeredQuestions++;
+                    document.getElementById('correct-count').textContent = correctCount;
+                    document.getElementById('incorrect-count').textContent = incorrectCount;
+                    
+                    if (answeredQuestions === questions.length) {
+                        const resultEl = document.getElementById('final-result');
+                        if (correctCount === questions.length) {
+                            resultEl.textContent = "¡Perfecto! Dominas los tiempos verbales.";
+                            resultEl.style.color = "green";
+                        } else if (correctCount > 5) {
+                            resultEl.textContent = "¡Buen trabajo! Tienes una buena base.";
+                            resultEl.style.color = "blue";
+                        } else {
+                            resultEl.textContent = "Necesitas practicar un poco más.";
+                            resultEl.style.color = "red";
+                        }
                     }
                 };
                 div.appendChild(btn);
